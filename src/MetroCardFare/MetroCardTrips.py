@@ -12,21 +12,25 @@ def num_info_using_different_transit(metro_card_balance):
     balance = metro_card_balance.show_balance()
     mtaTransportation = MTATransportation()
     transit_data = mtaTransportation.get_all_transit_info()
-    transit_list = []
     transit_fare = []
+    transit_count_data = {}
+
     while balance > 2.75:
         transportation = input("Enter Transit: ")
-        print(balance)
         if transportation not in transit_data.keys() or transit_data[transportation] > balance:
             print('Invalid Data or Insufficient Fare')
             continue
 
         balance = metro_card_balance.deduct_balance(transportation)
-        transit_list.append(transportation)
+        print(balance)
         transit_fare.append(mtaTransportation.get_transportation_fare(transportation))
+        if transportation in transit_count_data.keys():
+            transit_count_data[transportation] += 1
+        else:
+            transit_count_data[transportation] = 1
         count += 1
 
-    return transit_list, transit_fare, count
+    return transit_fare, transit_count_data, count
 
 
 def transit_usage_log(amount):
@@ -39,17 +43,14 @@ def transit_usage_log(amount):
         transit_data = num_info_using_different_transit(metro_card_balance)
         total = 0
         print("Name: Ron Karim")
-        print('Public Transportation ridden: ')
-        for transit in transit_data[0]:
-            print(transit)
-
         print('Public Transportation Fares Paid: ')
-        for fare in transit_data[1]:
-            print(fare)
+        for fare in transit_data[0]:
+            print('$' + str(fare))
             total += fare
 
-        print(total)
-        print('Number Of Trips Made until low balance: ' + str(transit_data[2]))
+        print('Total Fares Paid: $' + str(total))
+        print('Number Of Trips Made until insufficient balance: ' + str(transit_data[2]))
+        print('Number Of Times Commuted on Particular Public Transit: ' + str(transit_data[1]))
 
 
 
