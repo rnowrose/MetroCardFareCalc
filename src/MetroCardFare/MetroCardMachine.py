@@ -1,6 +1,6 @@
 class MTATransportation:
     def __init__(self):
-        self.transportation = {'NYC Local Bus': 2.75, 'NYC Subway': 2.75, 'Airtrain JFK': 7.75,
+        self.transportation = {'NYC Local Bus': 2.75, 'NYC Subway': 2.75, 'Airtrain JFK': 7.75, 'Express Bus': 6.75,
                                'PATH': 2.75, 'Beeline System': 2.75, 'NICE': 2.75}
 
     def get_transportation_fare(self, transit_name):
@@ -23,18 +23,15 @@ class MetroCardBalance:
         self.transportation = transportation
         self.balance = balance - self.METROCARD_FEE
 
-    def add_balance(self, amount):
-        self.balance += amount
-        if self.balance > 100:
-            raise BalanceFullException()
-        return self.balance
+    def __add__(self, other):
+        return self.balance + other.balance
 
     def show_balance(self):
         return self.balance
 
     def deduct_balance(self, transit_name):
         if self.balance < 2.75:
-            raise BalanceEmptyException()
+            raise InsufficientBalanceException()
 
         self.balance -= self.transportation.get_transportation_fare(transit_name)
         return self.balance
@@ -45,6 +42,6 @@ class BalanceFullException(Exception):
         self.message = message
 
 
-class BalanceEmptyException(Exception):
+class InsufficientBalanceException(Exception):
     def __init__(self, message='Insufficient Balance'):
         self.message = message
