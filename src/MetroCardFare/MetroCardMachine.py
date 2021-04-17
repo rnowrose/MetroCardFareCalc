@@ -23,14 +23,17 @@ class MetroCardBalance:
         self.transportation = transportation
         self.balance = balance - self.METROCARD_FEE
 
-    def __add__(self, other):
-        return self.balance + other.balance
+    def add_balance(self, amount):
+        self.balance += amount
+        if self.balance > 100:
+            raise BalanceFullException("Fare Cannot Go Over 100")
+        return self.balance
 
     def show_balance(self):
         return self.balance
 
     def deduct_balance(self, transit_name):
-        if self.balance < 2.75:
+        if self.balance < 0:
             raise InsufficientBalanceException()
 
         self.balance -= self.transportation.get_transportation_fare(transit_name)

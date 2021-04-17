@@ -36,21 +36,18 @@ def num_info_using_different_transit(metro_card_balance):
 def transit_usage_log(amount):
     mtaTransportation = MTATransportation()
     metro_card_balance = MetroCardBalance(mtaTransportation)
-    metro_card_balance.balance += amount
-    if metro_card_balance.balance > 100:
-        raise BalanceFullException("Fare Cannot Go Over 100")
-    else:
-        transit_data = num_info_using_different_transit(metro_card_balance)
-        total = 0
-        print("Name: Ron Karim")
-        print('Public Transportation Fares Paid: ')
-        for fare in transit_data[0]:
-            print('$' + str(fare))
-            total += fare
+    metro_card_balance.balance = metro_card_balance.add_balance(amount)
+    transit_data = num_info_using_different_transit(metro_card_balance)
+    total = 0
+    print("Name: Ron Karim")
+    print('Public Transportation Fares Paid: ')
+    for fare in transit_data[0]:
+        print('$' + str(fare))
+        total += fare
 
-        print('Total Fares Paid: $' + str(total))
-        print('Number Of Trips Made until insufficient balance: ' + str(transit_data[2]))
-        print('Number Of Times Commuted on Particular Public Transit: ' + str(transit_data[1]))
+    print('Total Fares Paid: $' + str(total))
+    print('Number Of Trips Made until insufficient balance: ' + str(transit_data[2]))
+    print('Number Of Times Commuted on Particular Public Transit: ' + str(transit_data[1]))
 
 
 
